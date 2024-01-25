@@ -3,7 +3,8 @@ from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
 from django.conf import settings
 
-class Ad(models.Model) :
+
+class Ad(models.Model):
     title = models.CharField(
             max_length=200,
             validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]

@@ -8,13 +8,14 @@
 <a href="{% url 'ads:ad_delete' ad.id %}"><i class="fa fa-trash"></i></a>
 {% endif %}
 </span>
-<h1>{{ ad.title }}</h1>
+<h1>{{ ad.title }} {{ ad.price }}</h1>
 <p>
-{{ ad.text }}
+{{ ad.text }} {{ ad.price }}
 </p>
 <p>
 {{ ad.price }}
 </p>
+    {{ ad.price }}
 <p>
 <a href="{% url 'ads:all' %}">All ads</a>
 </p>
