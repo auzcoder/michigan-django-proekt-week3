@@ -1,8 +1,6 @@
 {% extends "base_bootstrap.html" %}
 {% block navbar %}
 {% load app_tags %}
-{% load crispy_forms_tags %}
-
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -24,7 +22,7 @@
                 <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'logouts' %}">Logout</a></li>
+                <li><a href="{% url 'logout' %}?next={% url 'ads:all' %}">Logout</a></li>
             </ul>
         </li>
         {% else %}

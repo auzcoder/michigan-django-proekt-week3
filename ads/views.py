@@ -1,27 +1,3 @@
-# from ads.models import Ad
-# from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
-#
-#
-# class AdListView(OwnerListView):
-#     model = Ad
-#
-#
-# class AdDetailView(OwnerDetailView):
-#     model = Ad
-#
-#
-# class AdCreateView(OwnerCreateView):
-#     model = Ad
-#     fields = ['title', 'text', 'price']
-#
-#
-# class AdUpdateView(OwnerUpdateView):
-#     model = Ad
-#     fields = ['title', 'text', 'price']
-#
-#
-# class AdDeleteView(OwnerDeleteView):
-#     model = Ad
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -52,7 +28,6 @@ class AdDetailView(OwnerDetailView):
         context = { 'ad' : x, 'comments': comments, 'comment_form': comment_form }
         return render(request, self.template_name, context)
 
-
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
@@ -72,7 +47,6 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         ad.owner = self.request.user
         ad.save()
         return redirect(self.success_url)
-
 
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ads/ad_form.html'
@@ -117,7 +91,6 @@ class CommentCreateView(LoginRequiredMixin, View):
         comment = Comment(text=request.POST['comment'], owner=request.user, ad=f)
         comment.save()
         return redirect(reverse('ads:ad_detail', args=[pk]))
-
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment

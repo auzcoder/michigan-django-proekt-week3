@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Application definition
 
@@ -39,12 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+
     'home',
     'ads',
     "social_django",
     'crispy_forms',
-    'crispy_bootstrap5',
+
+    'django_extensions',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
