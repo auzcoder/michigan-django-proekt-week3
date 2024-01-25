@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ads',
     "social_django",
     'crispy_forms',
+    'crispy_bootstrap5',
 
     'django_extensions',
 ]
