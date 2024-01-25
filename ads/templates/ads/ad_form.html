@@ -1,21 +1,51 @@
+{#{% extends "base_menu.html" %}#}
+{#{% load crispy_forms_tags %}#}
+{#{% block content %}#}
+{##}
+{##}
+{#<p>#}
+{#  <form method="post" id="upload_form" enctype="multipart/form-data">#}
+{#    {% csrf_token %}#}
+{#    {{ form|crispy }}#}
+{#      {% csrf_token %}#}
+{#    <input type="submit" value="Submit">#}
+{#    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads:all' %}';return false;">#}
+{#  </form>#}
+{#</p>#}
+{#{% csrf_token %}#}
+{#<script>#}
+{#const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;#}
+{#</script>#}
+{#<script>#}
+{#$("#upload_form").submit(function() {#}
+{#  console.log('Checking file size');#}
+{#  if (window.File && window.FileReader && window.FileList && window.Blob) {#}
+{#      var file = $('#id_{{ form.upload_field_name }}')[0].files[0];#}
+{#      if (file && file.size > {{ form.max_upload_limit }} ) {#}
+{#          alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");#}
+{#      return false;#}
+{#    }#}
+{#  }#}
+{#//});#}
+{#</script>#}
+{#{% csrf_token %}#}
+{#<script>#}
+{#const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;#}
+{#</script>#}
+{#{% endblock %}#}
 {% extends "base_menu.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-
 
 <p>
   <form method="post" id="upload_form" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-      {% csrf_token %}
     <input type="submit" value="Submit">
-    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads:all' %}';return false;">
+    <input type="button" value="Cancel" onclick="window.location.href='{% url 'ads:all' %}';">
   </form>
 </p>
-{% csrf_token %}
-<script>
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-</script>
+
 <script>
 $("#upload_form").submit(function() {
   console.log('Checking file size');
@@ -23,13 +53,10 @@ $("#upload_form").submit(function() {
       var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
       if (file && file.size > {{ form.max_upload_limit }} ) {
           alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
-      return false;
-    }
+          return false;
+      }
   }
 });
 </script>
-{% csrf_token %}
-<script>
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-</script>
+
 {% endblock %}
