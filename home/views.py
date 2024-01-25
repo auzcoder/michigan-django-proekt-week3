@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.conf import settings
 
@@ -23,6 +23,6 @@ class HomeView(View):
 from django.contrib.auth import logout
 
 
-def logout_view(request):
+def logout_views(request):
     logout(request)
-    return logout(request)
+    return redirect('ads:all')
