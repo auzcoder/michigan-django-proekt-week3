@@ -26,18 +26,18 @@ SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
-CSRF_COOKIE_DOMAIN = "147.182.230.204"
-CSRF_TRUSTED_ORIGINS = [
-    'http://147.182.230.204:8000',
-    'http://0.0.0.0:8000',
-    'https://127.0.0.1:8000',
-    'http://147.182.230.204',
-    'http://0.0.0.0',
-    'https://127.0.0.1',
-]
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+# CSRF_COOKIE_DOMAIN = "147.182.230.204"
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://147.182.230.204:8000',
+#     'http://0.0.0.0:8000',
+#     'https://127.0.0.1:8000',
+#     'http://147.182.230.204',
+#     'http://0.0.0.0',
+#     'https://127.0.0.1',
+# ]
 # Application definition
 
 INSTALLED_APPS = [
