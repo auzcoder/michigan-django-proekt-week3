@@ -12,7 +12,10 @@
     <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads:all' %}';return false;">
   </form>
 </p>
-
+{% csrf_token %}
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 <script>
 $("#upload_form").submit(function() {
   console.log('Checking file size');
@@ -25,5 +28,8 @@ $("#upload_form").submit(function() {
   }
 });
 </script>
-
+{% csrf_token %}
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 {% endblock %}

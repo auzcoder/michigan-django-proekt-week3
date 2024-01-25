@@ -7,6 +7,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView, D
 
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+# from pyramid.renderers import render_to_response
 
 from ads.forms import CreateForm, CommentForm
 from ads.models import Ad, Comment, Fav
@@ -141,3 +142,9 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
+
+
+
+# def csrf_failure(request, reason=""):
+#     ctx = {'message': 'some custom messages'}
+#     return render_to_response(your_custom_template, ctx)
