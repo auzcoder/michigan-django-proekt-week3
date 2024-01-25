@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
 from django.conf import settings
 
@@ -18,11 +18,3 @@ class HomeView(View):
             'islocal': islocal
         }
         return render(request, 'home/main.html', context)
-
-
-from django.contrib.auth import logout
-
-
-def logout_views(request):
-    logout(request)
-    return redirect('ads:all')

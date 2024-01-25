@@ -20,13 +20,11 @@ from django.conf import settings
 from django.urls import re_path
 from django.contrib.auth import views as auth_views
 from django.views.static import serve
-from home.views import logout_views
 
 urlpatterns = [
     path('', include('ads.urls')),
     path('admin/', admin.site.urls),  # Keep
     path('accounts/', include('django.contrib.auth.urls')),  # Keep
-    path('accounts/', logout_views, name='logouts'),
     re_path(r'^oauth/', include('social_django.urls', namespace='social')),  # Keep
 
     # Sample applications

@@ -26,18 +26,7 @@ SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000", "http://0.0.0.0:8000"]
 
-CORS_ORIGIN_WHITELIST = (
-
-    'localhost:8000',
-    'localhost:8081',
-    'localhost',
-    'localhost:8888',
-    '0.0.0.0:800',
-)
-
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://0.0.0.0:8000']
 
 # Application definition
 
@@ -54,13 +43,9 @@ INSTALLED_APPS = [
     'ads',
     "social_django",
     'crispy_forms',
-    'crispy_bootstrap5',
 
     'django_extensions',
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -141,4 +126,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
