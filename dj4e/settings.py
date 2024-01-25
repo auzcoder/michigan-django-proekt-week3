@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Application definition
 
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'ads',
     "social_django",
     'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
