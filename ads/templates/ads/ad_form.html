@@ -4,7 +4,7 @@
 
 
 <p>
-  <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+  <form method="post" id="upload_form" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
       {% csrf_token %}
