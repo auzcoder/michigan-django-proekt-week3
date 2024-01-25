@@ -24,7 +24,7 @@ from django.views.static import serve
 urlpatterns = [
     path('', include('ads.urls')),
     path('admin/', admin.site.urls),  # Keep
-    path('accounts/', include('django.contrib.auth.urls')),  # Keep
+    # path('accounts/', include('django.contrib.auth.urls')),  # Keep
     re_path(r'^oauth/', include('social_django.urls', namespace='social')),  # Keep
 
     # Sample applications

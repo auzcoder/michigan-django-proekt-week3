@@ -18,3 +18,11 @@ class HomeView(View):
             'islocal': islocal
         }
         return render(request, 'home/main.html', context)
+
+
+from django.contrib.auth import logout
+
+
+def logout_view(request):
+    logout(request)
+    return logout(request)
