@@ -23,7 +23,7 @@ APP_NAME = 'ChucksList'
 SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000", "http://0.0.0.0:8000"]
