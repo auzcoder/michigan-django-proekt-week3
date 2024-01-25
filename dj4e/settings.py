@@ -26,7 +26,18 @@ SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000", "http://0.0.0.0:8000"]
 
+CORS_ORIGIN_WHITELIST = (
+
+    'localhost:8000',
+    'localhost:8081',
+    'localhost',
+    'localhost:8888',
+    '0.0.0.0:800',
+)
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://0.0.0.0:8000']
 
 # Application definition
 
