@@ -97,11 +97,13 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ads/ed_form.html'
     success_url = reverse_lazy('ads:all')
 
-    # def get(self, request, pk=None, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     form = self.get_form()
-    #     ctx = {'form': form}
-    #     return self.render_to_response(ctx)
+    @csrf_exempt
+    def get(self, request, pk=None, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        ctx = {'form': form}
+        return self.render_to_response(ctx)
+
     @csrf_exempt
     def post(self, request, pk=None, *args, **kwargs):
         self.object = self.get_object()
@@ -112,16 +114,16 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
         else:
             return self.form_invalid(form)
 
-    # def form_valid(self, form):
-    #     # Add owner to the model before saving
-    #     ad = form.save(commit=False)
-    #     ad.owner = self.request.user
-    #     ad.save()
-    #     return redirect(self.success_url)
+    def form_valid(self, form):
+        # Add owner to the model before saving
+        ad = form.save(commit=False)
+        ad.owner = self.request.user
+        ad.save()
+        return redirect(self.success_url)
 
-    # def form_invalid(self, form):
-    #     ctx = {'form': form}
-    #     return self.render_to_response(ctx)
+    def form_invalid(self, form):
+        ctx = {'form': form}
+        return self.render_to_response(ctx)
 
 
 
