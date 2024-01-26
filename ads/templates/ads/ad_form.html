@@ -75,18 +75,18 @@
   </form>
 
 
-{#<script>#}
-{#$("#upload_form").submit(function(event) {#}
-{#  console.log('Fayl hajmini tekshirish');#}
-{#  if (window.File && window.FileReader && window.FileList && window.Blob) {#}
-{#      let file = $('#id_{{ form.upload_field_name }}')[0].files[0];#}
-{#      if (file && file.size > {{ form.max_upload_limit }} ) {#}
-{#      alert("Fayl " + file.name + " turi " + file.type + " maxsus hajmdan katta bo'lishi kerak: {{ form.max_upload_limit_text }}");#}
-{#      event.preventDefault();  // Formani jo'natishni oldini oladi#}
-{#    }#}
-{#  }#}
-{#//});#}
-{#</script>#}
+<script>
+$("#upload_form").submit(function(event) {
+  console.log('Fayl hajmini tekshirish');
+  if (window.File && window.FileReader && window.FileList && window.Blob) {
+      let file = $('#id_{{ form.upload_field_name }}')[0].files[0];
+      if (file && file.size > {{ form.max_upload_limit }} ) {
+      alert("Fayl " + file.name + " turi " + file.type + " maxsus hajmdan katta bo'lishi kerak: {{ form.max_upload_limit_text }}");
+      event.preventDefault();  // Formani jo'natishni oldini oladi
+    }
+  }
+//});
+</script>
 
 {% endblock %}
 
