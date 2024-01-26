@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
-
+from django.views.decorators.csrf import csrf_exempt
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 # from pyramid.renderers import render_to_response
@@ -12,6 +12,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from ads.forms import CreateForm, CommentForm
 from ads.models import Ad, Comment, Fav
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
+
 
 
 class AdListView(OwnerListView):
@@ -36,8 +37,9 @@ class AdDetailView(OwnerDetailView):
         x = Ad.objects.get(id=pk)
         comments = Comment.objects.filter(ad=x).order_by('-updated_at')
         comment_form = CommentForm()
-        context = { 'ad' : x, 'comments': comments, 'comment_form': comment_form }
+        context = {'ad': x, 'comments': comments, 'comment_form': comment_form}
         return render(request, self.template_name, context)
+
 
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
@@ -81,6 +83,8 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 #         ad.save()
 #
 #         return redirect(self.success_url)
+
+
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad  # Replace with your actual model
     form_class = CreateForm  # Replace with the actual form you are using
@@ -92,7 +96,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     #     form = self.get_form()
     #     ctx = {'form': form}
     #     return self.render_to_response(ctx)
-
+    @csrf_exempt
     def post(self, request, pk=None, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -134,6 +138,7 @@ class CommentCreateView(LoginRequiredMixin, View):
         comment = Comment(text=request.POST['comment'], owner=request.user, ad=f)
         comment.save()
         return redirect(reverse('ads:ad_detail', args=[pk]))
+
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
