@@ -25,7 +25,7 @@ SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['147.182.230.204', 'http://147.182.230.204', '0.0.0.0', '127.0.0.1']
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
