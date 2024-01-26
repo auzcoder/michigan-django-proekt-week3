@@ -15,7 +15,12 @@ from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpda
 
 from django.db.models import Q
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class AdListView(OwnerListView):
     model = Ad
     template_name = "ads/ad_list.html"
@@ -49,6 +54,7 @@ class AdListView(OwnerListView):
         return render(request, self.template_name, ctx)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AdDetailView(OwnerDetailView):
     model = Ad
     template_name = "ads/ad_detail.html"
@@ -60,6 +66,8 @@ class AdDetailView(OwnerDetailView):
         context = { 'ad' : x, 'comments': comments, 'comment_form': comment_form }
         return render(request, self.template_name, context)
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
@@ -80,6 +88,8 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         ad.save()
         return redirect(self.success_url)
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
@@ -136,9 +146,7 @@ class CommentDeleteView(OwnerDeleteView):
 
 # csrf exemption in class based views
 # https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.db.utils import IntegrityError
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AddFavoriteView(LoginRequiredMixin, View):
