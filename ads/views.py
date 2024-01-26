@@ -13,7 +13,9 @@ from ads.forms import CreateForm, CommentForm
 from ads.models import Ad, Comment, Fav
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
 
 class AdListView(OwnerListView):
     model = Ad
@@ -41,6 +43,7 @@ class AdDetailView(OwnerDetailView):
         return render(request, self.template_name, context)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
@@ -85,6 +88,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 #         return redirect(self.success_url)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad  # Replace with your actual model
     form_class = CreateForm  # Replace with the actual form you are using
@@ -96,7 +100,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     #     form = self.get_form()
     #     ctx = {'form': form}
     #     return self.render_to_response(ctx)
-    @csrf_exempt
+    # @csrf_exempt
     def post(self, request, pk=None, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -152,9 +156,7 @@ class CommentDeleteView(OwnerDeleteView):
 
 # csrf exemption in class based views
 # https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.db.utils import IntegrityError
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AddFavoriteView(LoginRequiredMixin, View):
