@@ -48,11 +48,13 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
 
+    @csrf_exempt
     def get(self, request, pk=None):
         form = CreateForm()
         ctx = {'form': form}
         return render(request, self.template_name, ctx)
 
+    @csrf_exempt
     def post(self, request, pk=None):
         form = CreateForm(request.POST, request.FILES or None)
         if not form.is_valid():
@@ -100,7 +102,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     #     form = self.get_form()
     #     ctx = {'form': form}
     #     return self.render_to_response(ctx)
-    # @csrf_exempt
+    @csrf_exempt
     def post(self, request, pk=None, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -181,7 +183,6 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
-
 
 
 # def csrf_failure(request, reason=""):
