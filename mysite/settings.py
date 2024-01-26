@@ -22,7 +22,7 @@ APP_NAME = 'YevhenList'   # Add
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '**************************************************'
+SECRET_KEY = 'django-insecure-!rn7jp=kvna0f#in=p&)mupoq0&i+t-+a!h=4j=*=y9^3^%dkc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # Extensions - installed with pip3 / requirements.txt
     'django_extensions',
     'crispy_forms',
-    'crispy_bootstrap3',
+    'crispy_bootstrap5',
     'rest_framework',
     'social_django',
     'taggit',
@@ -58,9 +58,11 @@ INSTALLED_APPS = [
     'tagme.apps.TagmeConfig',
 ]
 
-# When we get to crispy forms :)
-CRISPY_TEMPLATE_PACK = 'bootstrap3'  # Add
-
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+#
+# # When we get to crispy forms :)
+CRISPY_TEMPLATE_PACK = 'bootstrap5'  # Add
+# CRISPY_TEMPLATE_PACK = 'uni_form'
 # When we get to tagging
 TAGGIT_CASE_INSENSITIVE = True
 
