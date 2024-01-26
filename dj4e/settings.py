@@ -30,14 +30,14 @@ ALLOWED_HOSTS = ['*']
 # SESSION_COOKIE_SECURE = True
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 # CSRF_COOKIE_DOMAIN = "147.182.230.204"
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://147.182.230.204:8000',
-#     'http://0.0.0.0:8000',
-#     'https://127.0.0.1:8000',
-#     'http://147.182.230.204',
-#     'http://0.0.0.0',
-#     'https://127.0.0.1',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://147.182.230.204:8000',
+    'http://0.0.0.0:8000',
+    'https://127.0.0.1:8000',
+    'http://147.182.230.204',
+    'http://0.0.0.0',
+    'https://127.0.0.1',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -133,6 +133,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 1600  # 20 minutes
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
