@@ -4,25 +4,43 @@ from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.humanize.templatetags.humanize import naturaltime
+
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-# from pyramid.renderers import render_to_response
 
 from ads.forms import CreateForm, CommentForm
 from ads.models import Ad, Comment, Fav
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.db.utils import IntegrityError
+from django.db.models import Q
+
 
 class AdListView(OwnerListView):
     model = Ad
     template_name = "ads/ad_list.html"
 
     def get(self, request):
-        ad_list = Ad.objects.all()
+        strval = request.GET.get("search", False)
+        if strval :
+            # Simple title-only search
+            # objects = Post.objects.filter(title__contains=strval).select_related().order_by('-updated_at')[:10]
+
+            # Multi-field search
+            query = Q(title__contains=strval)
+            query.add(Q(text__contains=strval), Q.OR)
+            objects = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+        else :
+            # try both versions with > 4 posts and watch the queries that happen
+            objects = Ad.objects.all().order_by('-updated_at')[:10]
+            # objects = Post.objects.select_related().all().order_by('-updated_at')[:10]
+
+        # Augment the post_list
+        for obj in objects:
+            obj.natural_updated = naturaltime(obj.updated_at)
+
+
+        ad_list = objects
         favorites = list()
         if request.user.is_authenticated:
             rows = request.user.favorite_ads.values('id')
@@ -39,22 +57,18 @@ class AdDetailView(OwnerDetailView):
         x = Ad.objects.get(id=pk)
         comments = Comment.objects.filter(ad=x).order_by('-updated_at')
         comment_form = CommentForm()
-        context = {'ad': x, 'comments': comments, 'comment_form': comment_form}
+        context = { 'ad' : x, 'comments': comments, 'comment_form': comment_form }
         return render(request, self.template_name, context)
 
-
-@method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
 
-    @csrf_exempt
     def get(self, request, pk=None):
         form = CreateForm()
         ctx = {'form': form}
         return render(request, self.template_name, ctx)
 
-    @csrf_exempt
     def post(self, request, pk=None):
         form = CreateForm(request.POST, request.FILES or None)
         if not form.is_valid():
@@ -66,20 +80,16 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         ad.save()
         return redirect(self.success_url)
 
-
-@method_decorator(csrf_exempt, name='dispatch')
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
 
-    @csrf_exempt
     def get(self, request, pk):
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(instance=ad)
         ctx = {'form': form}
         return render(request, self.template_name, ctx)
 
-    @csrf_exempt
     def post(self, request, pk=None):
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(request.POST, request.FILES or None, instance=ad)
@@ -92,43 +102,6 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
         ad.save()
 
         return redirect(self.success_url)
-
-
-# @method_decorator(csrf_exempt, name='dispatch')
-# class AdUpdateView(LoginRequiredMixin, UpdateView):
-#     model = Ad  # Replace with your actual model
-#     form_class = CreateForm  # Replace with the actual form you are using
-#     template_name = 'ads/ed_form.html'
-#     success_url = reverse_lazy('ads:all')
-#
-#     @csrf_exempt
-#     def get(self, request, pk=None, *args, **kwargs):
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         ctx = {'form': form}
-#         return self.render_to_response(ctx)
-#
-#     @csrf_exempt
-#     def post(self, request, pk=None, *args, **kwargs):
-#         self.object = self.get_object()
-#         form = self.get_form()
-#
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
-#
-#     def form_valid(self, form):
-#         # Add owner to the model before saving
-#         ad = form.save(commit=False)
-#         ad.owner = self.request.user
-#         ad.save()
-#         return redirect(self.success_url)
-#
-#     def form_invalid(self, form):
-#         ctx = {'form': form}
-#         return self.render_to_response(ctx)
-
 
 
 class AdDeleteView(OwnerDeleteView):
@@ -151,7 +124,6 @@ class CommentCreateView(LoginRequiredMixin, View):
         comment.save()
         return redirect(reverse('ads:ad_detail', args=[pk]))
 
-
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
     template_name = "ads/comment_delete.html"
@@ -164,12 +136,14 @@ class CommentDeleteView(OwnerDeleteView):
 
 # csrf exemption in class based views
 # https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AddFavoriteView(LoginRequiredMixin, View):
-    def post(self, request, pk):
-        print("Add PK", pk)
+    def post(self, request, pk) :
+        print("Add PK",pk)
         ad = get_object_or_404(Ad, id=pk)
         fav = Fav(user=request.user, ad=ad)
         try:
@@ -189,8 +163,3 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
-
-
-# def csrf_failure(request, reason=""):
-#     ctx = {'message': 'some custom messages'}
-#     return render_to_response(your_custom_template, ctx)
