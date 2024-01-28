@@ -1,3 +1,4 @@
+
 # Really simple naturalsize that is missing from django humanize :(
 def naturalsize(count):
     fcount = float(count)
