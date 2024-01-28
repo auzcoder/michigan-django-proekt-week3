@@ -25,7 +25,7 @@ SECRET_KEY = '=o(+)#v*z168p)e_(^%w_dhi^pu%vpro3&n)%#lrc=5$jjvg8!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8b7eaafceb20.ngrok.io', '127.0.0.1']
+ALLOWED_HOSTS = ['*', '127.0.0.1']
 
 
 # Application definition
@@ -43,9 +43,12 @@ INSTALLED_APPS = [
     'ads',
     "social_django",
     'crispy_forms',
+    'crispy_bootstrap5',
 
     'django_extensions',
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,3 +129,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
