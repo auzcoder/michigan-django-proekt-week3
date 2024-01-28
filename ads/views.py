@@ -4,6 +4,8 @@ from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -21,22 +23,27 @@ class AdDetailView(OwnerDetailView):
     model = Ad
     template_name = "ads/ad_detail.html"
 
-    def get(self, request, pk) :
+    @csrf_protect
+    def get(self, request, pk):
         x = Ad.objects.get(id=pk)
         comments = Comment.objects.filter(ad=x).order_by('-updated_at')
         comment_form = CommentForm()
-        context = { 'ad' : x, 'comments': comments, 'comment_form': comment_form }
+        context = {'ad': x, 'comments': comments, 'comment_form': comment_form}
         return render(request, self.template_name, context)
 
+
+@csrf_exempt
 class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
 
+    @csrf_protect
     def get(self, request, pk=None):
         form = CreateForm()
         ctx = {'form': form}
         return render(request, self.template_name, ctx)
 
+    @csrf_protect
     def post(self, request, pk=None):
         form = CreateForm(request.POST, request.FILES or None)
         if not form.is_valid():
@@ -48,16 +55,20 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         ad.save()
         return redirect(self.success_url)
 
+
+@csrf_exempt
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'ads/ad_form.html'
     success_url = reverse_lazy('ads:all')
 
+    @csrf_protect
     def get(self, request, pk):
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(instance=ad)
         ctx = {'form': form}
         return render(request, self.template_name, ctx)
 
+    @csrf_protect
     def post(self, request, pk=None):
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(request.POST, request.FILES or None, instance=ad)
@@ -91,6 +102,7 @@ class CommentCreateView(LoginRequiredMixin, View):
         comment = Comment(text=request.POST['comment'], owner=request.user, ad=f)
         comment.save()
         return redirect(reverse('ads:ad_detail', args=[pk]))
+
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
