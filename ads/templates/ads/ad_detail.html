@@ -20,7 +20,7 @@
 {% if pic.content_type %}
 <div id="overlay" class="overlay" style="text-align: center;"
    onclick="document.getElementById('overlay').style.display = 'none';" >
-<img style="width:90%;margin-top: 50px; border:3px solid black;" src="{% url 'ads:ad_picture' ad.id %}">
+<img alt="" style="width:90%;margin-top: 50px; border:3px solid black;" src="{% url 'ads:ad_picture' ad.id %}">
 </div>
 {% endif %}
 
@@ -51,7 +51,7 @@
 <p>
 {% load crispy_forms_tags %}
 <form method="post" action="{% url 'ads:ad_comment_create' ad.id %}">
-    {% csrf_token %}
+{#    {% csrf_token %}#}
     {{ comment_form|crispy }}
 <input type="submit" value="Submit">
 <input type="submit" value="All Ads" onclick="window.location.href='{% url 'ads:all' %}';return false;">
